@@ -1,0 +1,58 @@
+1. Left Right Node 
+or using pre order move node right left and reverse answer.
+
+vector<int> postorderTraversal(TreeNode* root) {
+  if(!root) return {};
+  stack<TreeNode*> s1, s2;
+  s1.push(root);
+  TreeNode* temp;
+  while(!s1.empty()){
+      temp = s1.top();
+      s1.pop();
+
+      if(temp->left)
+          s1.push(temp->left);
+      if(temp->right)
+          s1.push(temp->right);
+
+      s2.push(temp);
+  }
+  vector<int> ans;
+  while(!s2.empty()){
+      ans.push_back(s2.top()->val);
+      s2.pop();
+  }
+  return ans;
+}
+
+
+2. Using Travesing post order.
+vector<int> Solution::postorderTraversal(TreeNode* A) {
+    if(!A) return {};
+    vector<int> ans;
+    stack<TreeNode*> s;
+    TreeNode* curr = A;
+    while(curr || !s.empty()){
+        if(curr){
+            s.push(curr);
+            curr = curr->left;
+        }
+        else{
+            TreeNode* temp = s.top()->right;
+            if(temp == NULL){
+                temp = s.top();
+                ans.push_back(temp->val);
+                s.pop();
+                while(!s.empty() && temp == s.top()->right){
+                    temp = s.top();
+                    s.pop();
+                    ans.push_back(temp->val);
+                }
+            }
+            else{
+                curr = temp;
+            }
+        }
+    }
+    return ans;
+}
