@@ -1,0 +1,32 @@
+If 2 or more Tree Nodes shares the same vertical level then the one
+with earlier occurence in the level-traversal of tree comes first in the output.
+
+Queue level order.
+
+vector<vector<int> > Solution::verticalOrderTraversal(TreeNode* A) {
+    if(!A) return {};
+    map<int, vector<int>> M;
+    queue<pair<TreeNode*, int>> q;
+    q.push({A,0});
+
+    while(!q.empty()){
+        TreeNode* curr = q.front().first;
+        int d = q.front().second;
+        M[d].push_back(curr->val);
+        q.pop();
+        if(curr->left){
+            q.push({curr->left, d-1});
+        }
+        if(curr->right){
+            q.push({curr->right , d+1});
+        }
+    }
+
+    vector<vector<int>> ans;
+    for(auto x: M){
+        ans.push_back(x.second);
+    }
+    return ans;
+}
+
+
