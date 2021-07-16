@@ -1,0 +1,52 @@
+1. as long as there is a left child go left and push that, now no left child so pop the top nd put to answer 
+and then move to right.
+
+vector<int> Solution::inorderTraversal(TreeNode* A) {
+    stack<TreeNode*> s;
+    TreeNode* curr = A;
+    vector<int> ans;
+    while(!s.empty() || curr){
+        while(curr){
+            s.push(curr);
+            curr = curr->left;
+        }
+        curr = s.top();
+        ans.push_back(curr->val);
+        s.pop();
+        curr = curr->right;
+        
+    }
+    return ans;
+}
+
+
+2. Morris traversal for each node if there is left child then find its predecessor so if we have reached end we can again go back.
+That's why we need predecessor so we can traverse just back.
+
+
+vector<int> Solution::inorderTraversal(TreeNode* A) {
+    TreeNode* curr = A;
+    vector<int> ans;
+    while(curr){
+        if(!curr->left){
+            ans.push_back(curr->val);
+            curr = curr->right;
+        }
+        else{
+            TreeNode* pre;
+            pre = curr->left;
+            while(pre->right && pre->right != curr){
+                pre = pre->right;
+            }
+            if(pre->right == curr){
+                ans.push_back(curr->val);
+                curr = curr->right;
+            }
+            else{
+                pre->right = curr;
+                curr = curr->left;
+            }
+        }
+    }
+    return ans;
+}
