@@ -1,0 +1,75 @@
+vector<int> Solution::preorderTraversal(TreeNode* A) {
+    stack<TreeNode*> s;
+    vector<int> ans;
+    TreeNode* curr = A;
+    while(curr || !s.empty()){
+        while(curr){
+            ans.push_back(curr->val);
+            s.push(curr);
+            curr = curr->left;
+        }
+        curr = s.top();
+        s.pop();
+        curr = curr->right;
+
+    }
+    return ans;
+}
+
+
+2.
+vector<int> Solution::preorderTraversal(TreeNode* A) {
+    if(!A) return {};
+    stack<TreeNode*> s;
+    s.push(A);
+    vector<int> ans;
+    TreeNode* curr;
+    while(!s.empty()){
+        curr = s.top();
+        s.pop();
+        ans.push_back(curr->val);
+        if(curr->right) s.push(curr->right);
+        if(curr->left) s.push(curr->left);
+    }
+    return ans;
+}
+
+3. Morris 
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::preorderTraversal(TreeNode* A) {
+    TreeNode* curr = A;
+    vector<int> ans;
+    while(curr){
+        if(!curr->left){
+            ans.push_back(curr->val);
+            curr = curr->right;
+        }
+        else{
+            TreeNode* pre;
+            pre = curr->left;
+            while(pre->right && pre->right != curr){
+                pre = pre->right;
+            }
+            if(pre->right == curr){
+                // ans.push_back(curr->val);
+                curr = curr->right;
+                pre->right = NULL;
+            }
+            else{
+                ans.push_back(curr->val);               just change this statement and you are done.
+                pre->right = curr;
+                curr = curr->left;
+            }
+        }
+    }
+    return ans;
+}
+
