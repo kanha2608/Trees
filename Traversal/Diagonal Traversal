@@ -1,0 +1,45 @@
+1. When traversing if traverse all it right right now and if it has left child push it to queue, this way we can do.
+
+vector<int> Solution::solve(TreeNode* A) {
+    if(!A) return {};
+    queue<TreeNode*> q;
+    vector<int> ans;
+    q.push(A);
+    while(!q.empty()){
+        TreeNode* curr = q.front();
+        q.pop();
+        while(curr){
+            ans.push_back(curr->val);
+            if(curr->left){
+                q.push(curr->left);
+            }
+            curr = curr->right;
+        }
+    }
+    return ans;
+}
+
+
+2. Using map and while going left we increase our slope and move in preorder fashion.
+
+vector<vector<int>> res;
+void dfs(TreeNode* A, int d){
+    if(!A) return ;
+    if(res.size() == d){
+        res.push_back({A->val});
+    }
+    else res[d].push_back(A->val);
+    dfs(A->left, d+1);
+    dfs(A->right, d);
+}
+vector<int> Solution::solve(TreeNode* A) {
+    if(!A) return {};
+    res.clear();
+    dfs(A, 0);
+    vector<int> ans;
+    for(auto x: res){
+        ans.insert(ans.end(), x.begin(),x.end());
+    }
+    return ans;
+    
+}
