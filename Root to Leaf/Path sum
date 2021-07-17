@@ -1,0 +1,18 @@
+Use recursion. 
+And use val to store answer.
+void dfs(TreeNode* A, int B,int val, bool& ans){
+    if(!A) return;
+    if(ans) return;
+    val += A->val;
+    if(!A->left && !A->right){
+        if(val == B) ans = true;
+        return;
+    }   
+    dfs(A->left, B, val, ans);
+    dfs(A->right, B, val, ans);
+}
+int Solution::hasPathSum(TreeNode* A, int B) {
+    bool ans = false;
+    dfs(A, B, 0,  ans);
+    return ans;
+}
