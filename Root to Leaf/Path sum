@@ -16,3 +16,14 @@ int Solution::hasPathSum(TreeNode* A, int B) {
     dfs(A, B, 0,  ans);
     return ans;
 }
+
+
+
+
+2. 
+int Solution::hasPathSum(TreeNode* A, int B) {
+    if(!A) return 0;
+    B-= A->val;
+    if(!A->left && !A->right) return B == 0;
+    return hasPathSum(A->left, B) || hasPathSum(A->right, B);
+}
