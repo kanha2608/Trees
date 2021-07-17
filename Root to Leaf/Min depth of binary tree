@@ -1,0 +1,40 @@
+Common pattern in root to leaf move top to bottom and pass a varible like distance , level, sum to accumulate.
+And if it is leaf then only calculate answer.
+
+void dfs(TreeNode* A, int level, int& ans){
+    if(!A) return;
+    level++;
+    if(!A->left && !A->right){
+        ans = min(ans, level);
+        return;
+    }
+    dfs(A->left,level , ans);
+    dfs(A->right,level, ans);
+}
+int Solution::minDepth(TreeNode* A) {
+    int ans = INT_MAX;
+    dfs(A, 0 , ans);
+    return ans;
+}
+
+
+
+2. 
+IF this is Null then answer is zero. 
+if this is leaf then answer is 1
+if left part is null then try for right part.
+if right part is null then for left part.
+
+If both present min of both + 1;
+
+int dfs(TreeNode* A){
+    if(!A) return 0;
+    if(!A->left && !A->right) return 1;
+    if(!A->left) return dfs(A->right) + 1;
+    if(!A->right) return dfs(A->left) + 1;
+
+    return 1 + min(dfs(A->left) , dfs(A->right));
+}
+int Solution::minDepth(TreeNode* A) {
+    return dfs(A);
+}
