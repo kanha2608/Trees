@@ -1,0 +1,24 @@
+Here as we propogate we multiply sum with 10 and add curr val and call recursively for left and right subtree
+
+Think about mod.
+int sum = 0, mod = 1003;
+void dfs(TreeNode* A, int val){
+    if(!A) return;
+    
+    val = val*10 + A->val;
+    val %= mod;    // This is necessary over here only
+    if(!A->left && !A->right){
+        sum += val;
+        sum %= mod;     // Also put here too.
+        return;
+    }
+    dfs(A->left , val);
+    dfs(A->right, val);
+
+}
+int Solution::sumNumbers(TreeNode* A) {
+    sum = 0;
+    dfs(A, 0);
+    return sum;   
+}
+
