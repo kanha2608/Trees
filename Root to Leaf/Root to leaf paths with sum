@@ -1,0 +1,26 @@
+Here same process like accumulating here also we put a array and at each step value insert in arr. and value is zero and root then insert to answer.
+Use of recursion array since if we backtrack it will be just one step back where pushing was not done.
+
+1. Base condition.
+2. do operation like insert adding sum subtracting 
+3. Check if it is leaf
+4. For left and right.
+
+vector<vector<int>> ans;
+void dfs(TreeNode*A, int sum , vector<int> arr){
+    if(!A) return;
+    sum -= A->val;
+    arr.push_back(A->val);
+    if(!A->left && !A->right){
+        if(sum == 0) ans.push_back(arr);
+        return;
+    }
+    dfs(A->left, sum , arr);
+    dfs(A->right, sum, arr);
+} 
+vector<vector<int> > Solution::pathSum(TreeNode* A, int B) {
+    ans.clear();
+    vector<int> arr ;
+    dfs(A, B, arr);
+    return ans;
+}
