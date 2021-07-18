@@ -1,0 +1,32 @@
+Here, We will follow selective dfs. if curr->val or curr->right == b then we don't put that to our answer. store level of required.
+use unordered map to store values on level.
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+unordered_map<int, vector<int>> M;
+int l;
+void dfs(TreeNode* A,int level, int B){
+    if(!A) return;
+    if((A->left && A->left->val == B) || (A->right && A->right->val == B)){
+        l = level + 1;
+        return;
+    }
+    M[level].push_back(A->val);
+    dfs(A->left, level+1, B);
+    dfs(A->right, level + 1, B);
+}
+vector<int> Solution::solve(TreeNode* A, int B) {
+    if(!A || A->val == B) return {};
+    M.clear();
+    dfs(A, 0 , B);
+
+    return M[l];
+}
