@@ -1,0 +1,26 @@
+Traverse the tree in Preorder fashion
+Check if both the tree nodes are NULL
+If not, then update the value
+Recur for left subtrees
+Recur for right subtrees
+Return root of updated Tree
+
+TreeNode* dfs(TreeNode* A, TreeNode* B){
+    if(!A) return B;
+    if(!B) return A;
+    int val = 0;
+    if(A) val += A->val;
+    if(B) val += B->val;
+    TreeNode* root = new TreeNode(val);
+    root->left = dfs(A->left, B->left);
+    root->right = dfs(A->right, B->right);
+
+    return root;
+}
+TreeNode* Solution::solve(TreeNode* A, TreeNode* B) {
+    if(!A) return B;
+    if(!B) return A;
+
+    return dfs(A,B);
+
+}
