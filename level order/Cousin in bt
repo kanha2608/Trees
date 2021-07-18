@@ -30,3 +30,68 @@ vector<int> Solution::solve(TreeNode* A, int B) {
 
     return M[l];
 }
+
+
+2. Or using level order
+
+How to print the cousin nodes instead of siblings and how to get the nodes of that level in the queue?
+
+During the level order, when for the parent node, if parent->left == Node_to_find,
+or parent->right == Node_to_find, then the children of this parent must not be pushed
+into the queue (as one is the node and other will be its sibling). Push the remaining nodes
+at the same level in the queue and then exit the loop. The current queue will have the nodes 
+at the next level (the level of the node being searched, except the node and its sibling). Now, print the queue.
+
+
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+vector<int> Solution::solve(TreeNode* A, int B) {
+    if(!A || A->val == B) return {};
+    vector<int> ans;
+    queue<TreeNode*> q;
+    q.push(A);
+    TreeNode* parent;
+    bool flag = false;
+    while(!q.empty()){
+        int n = q.size();
+        for(int i = 0 ; i  < n ; i++){
+            TreeNode* temp = q.front();
+            q.pop();
+            if(temp->left){
+                if(temp->left->val == B){
+                    parent = temp;
+                    flag = true;
+                }
+                q.push(temp->left);
+            }
+            if(temp->right){
+                if(temp->right->val == B){
+                    parent = temp;
+                    flag = true;
+                }
+                q.push(temp->right);
+            }
+        }
+        if(flag == true){
+            while(!q.empty()){
+                TreeNode* temp = q.front();
+                if(temp != parent->left && temp != parent->right)
+                    ans.push_back(q.front()->val);
+                q.pop();
+            }
+        }
+    }
+    return ans;
+
+    
+}
+
