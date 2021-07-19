@@ -1,0 +1,53 @@
+O(N) space.
+void Solution::connect(TreeLinkNode* A) {
+    if(!A) return;
+    queue<TreeLinkNode*> q;
+    q.push(A);
+    while(!q.empty()){
+        TreeLinkNode* curr;
+        int n = q.size();
+        for(int i = 0 ;i  < n; i++){
+            curr = q.front();
+            q.pop();
+            if(i == n-1){
+                curr->next = NULL;
+            }
+            else curr->next = q.front();
+
+            if(curr->left) q.push(curr->left);
+            if(curr->right) q.push(curr->right);
+        }
+    }
+}
+
+
+2. O(1) space. 
+1. Leftwall first pointer on next level. 
+2. Prev that is last pointer on next level whose next has to be set.
+3. curr to traverse on curr level.
+
+if(prev == NULL) means this is first node so set our leftwall. 
+else set prev->next with current node left or right.
+void Solution::connect(TreeLinkNode* A) {
+    if(!A) return;
+    TreeLinkNode *leftwall = NULL, *prev = NULL, *curr = A;
+    while(curr){
+        while(curr){
+            if(curr->left){
+                if(prev)    prev->next = curr->left;
+                else    leftwall = curr->left;
+                prev = curr->left;
+            }
+            if(curr->right){
+                if(prev) prev->next = curr->right;
+                else leftwall = curr->right;
+                prev = curr->right;
+            }
+            curr = curr->next;
+        }
+        curr = leftwall;
+        leftwall = NULL;
+        prev = NULL;
+    }
+}
+
