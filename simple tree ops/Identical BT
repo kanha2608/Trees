@@ -1,0 +1,11 @@
+When are the 2 trees the same ?
+When the root values are the same, and left subtree of both trees are same, and right subtree of both trees are the same.
+
+bool dfs(TreeNode* A, TreeNode* B){
+    if(!A || !B) return  A == B;
+    return A->val == B->val && dfs(A->left, B->left) && dfs(A->right, B->right);
+}
+int Solution::isSameTree(TreeNode* A, TreeNode* B) {
+    if(!A || !B) return A==B;
+    return dfs(A, B);
+}
