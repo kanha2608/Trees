@@ -1,0 +1,19 @@
+If current is Null then return Null.
+if this is leaf node, then return this node.
+if its left is NULL then solve for right,   it will give us either two children or leaf node.
+if its right is NULL then solve for left.
+
+finally if both node present then call for left and right.
+
+
+TreeNode* Solution::solve(TreeNode* A) {
+    if(!A) return NULL;
+    if(!A->left && !A->right) return A;
+    
+    if(!A->left) solve(A->right);
+    if(!A->right) solve(A->left);
+
+    A->left = solve(A->left);
+    A->right = solve(A->right);
+    return A;
+}
