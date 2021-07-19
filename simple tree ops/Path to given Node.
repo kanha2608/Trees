@@ -1,0 +1,26 @@
+1. Use of without referece but this could give TLE since in each call it has to copy whole data.
+2. BY reference.
+
+
+5 steps.
+1. if(root is NULL) return false;
+2. push in arr.
+3. check if this our required if yes then return true;
+4. if(present in left or right) then return true;
+5. not present in any of it so pop this 
+6.  return false;
+
+bool dfs(TreeNode* A, int B, vector<int>& path){
+    if(!A) return false;
+    path.push_back(A->val);
+    if(A->val == B) return true;
+    if(dfs(A->left, B, path) || dfs(A->right, B, path)) return true;
+
+    path.pop_back();
+    return false;
+}
+vector<int> Solution::solve(TreeNode* A, int B) {
+    vector<int> path;
+    dfs(A, B, path);
+    return path;
+}
