@@ -1,0 +1,21 @@
+swap left and right child and call for children.
+
+TreeNode* Solution::invertTree(TreeNode* A) {
+    if(!A) return A;
+    swap(A->left, A->right);
+    invertTree(A->left);
+    invertTree(A->right);
+    return A;
+}
+
+
+2. first call for childrent and then swap. 
+
+
+TreeNode* Solution::invertTree(TreeNode* A) {
+    if(!A) return A;
+    A->left = invertTree(A->left);
+    A->right  = invertTree(A->right);
+    swap(A->left , A->right);
+    return A;
+}
