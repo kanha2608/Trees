@@ -1,0 +1,48 @@
+class Solution {
+public:
+    void pushLeft(stack<TreeNode*>& s){         // The concept is same as bst iterator.
+        TreeNode* t = s.top();
+        s.pop();
+        t = t->right;          // First, Go right and then go to the all left.
+        while(t){
+            s.push(t);
+            t = t->left;
+        }
+    }
+    void pushLeft(stack<TreeNode*>& s,TreeNode* root){
+        TreeNode* t = root;
+        while(t){
+            s.push(t);
+            t = t->left;
+        }
+    }
+    
+    vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
+        stack<TreeNode*> s1, s2;
+        
+        TreeNode *n1 = root1, *n2 = root2;
+        pushLeft(s1, n1);
+        pushLeft(s2, n2);
+        
+        vector<int> ans;
+        while(!s1.empty() || !s2.empty()){
+            int v1 = 1e9 , v2 = 1e9;         // Here not needed to handle outside the loop.
+            if(!s1.empty()){
+                v1 = s1.top()->val;        // If not empty then only use this value. 
+            }
+            if(!s2.empty()){
+                v2 = s2.top()->val;
+            }
+            if(v1 <= v2){
+                ans.push_back(v1);          // If root1 has smaller value then move on that side. otherwise on the other side.
+                pushLeft(s1);
+            }
+            else{
+                ans.push_back(v2);
+                pushLeft(s2);
+            }
+        }
+        return ans;
+        
+    }
+};
