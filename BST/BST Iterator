@@ -1,0 +1,60 @@
+Here, we will maintain a stack.
+first we will push all the left values in the stack and now the stack top will give me the least value.
+
+now its time to remove this value so but we have to push all the value that will come after it 
+so its next will be first right and then all left.
+
+so we will push till that value.
+
+
+int next() {
+      int ans ;
+      ans = st.top()->val;
+      TreeNode* temp = st.top();
+      st.pop();
+      temp = temp->right;          // First right and then all way to left. 
+      while(temp){
+          st.push(temp);        
+          temp = temp->left;
+      }
+      return ans;
+ }
+ 
+ 
+ at initialise push down the all the left values in the bst.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+class BSTIterator {
+public:
+    stack<TreeNode*> st;
+    BSTIterator(TreeNode* root) {
+        while(root){
+            st.push(root);
+            root  = root->left;
+        }
+    }
+    int next() {
+        int ans ;
+        ans = st.top()->val;
+        TreeNode* temp = st.top();
+        st.pop();
+        temp = temp->right;
+        while(temp){
+            st.push(temp);
+            temp = temp->left;
+        }
+        return ans;
+    }
+    
+    bool hasNext() {
+        return (int)st.size() > 0;
+    }
+};
