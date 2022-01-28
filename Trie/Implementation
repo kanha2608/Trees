@@ -1,0 +1,53 @@
+class Trie {
+public:
+    
+    struct TrieNode{
+        int end;
+        TrieNode* child[26];
+        
+        TrieNode(){
+            end = 0;
+            memset(child, NULL, sizeof(child));
+        }
+    };
+    
+    TrieNode* root;
+    
+    Trie() {
+        root = new TrieNode();
+    }
+    
+    void insert(string word) {
+        TrieNode* curr = root;
+        for(auto c: word){
+            if(!curr->child[c-'a']) curr->child[c-'a'] = new TrieNode();
+            curr = curr->child[c-'a'];
+        }
+        curr->end += 1;
+    }
+    
+    bool TrieSearch(string word, TrieNode* curr , int key){
+        for(int i = 0 ; i < word.size() ; i++){
+            if(!curr->child[word[i] - 'a']) return false;
+            curr = curr->child[word[i]-'a'];
+        }
+        if(key == 1) return curr->end;
+        else return true;
+        
+    }
+    bool search(string word) {
+        return TrieSearch(word, root , 1);
+    }
+    
+    bool startsWith(string prefix) {
+        return TrieSearch(prefix, root, 0);
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
