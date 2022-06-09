@@ -1,0 +1,70 @@
+sort on the basis of the limit 
+Now just insert the element if they are required for the current range. 
+So we just need to make the tree only once.
+class Solution {
+public:
+    class TrieNode{
+        public: 
+        int end;
+        TrieNode* child[2];
+        TrieNode(){
+            end = 0;
+            child[0] = child[1] = NULL;
+        }
+    };
+    TrieNode* root;
+    void build(int x, TrieNode* root){
+        TrieNode* curr = root;
+        for(int i = 31; i >= 0; i--){
+            int val = ((x >> i) & 1);
+            if(!curr->child[val]) curr->child[val] = new TrieNode();
+            curr = curr->child[val];
+        }
+        curr->end++;
+        
+    }
+    
+    int helper(int val, TrieNode* root){
+        TrieNode* curr = root;
+        int res = 0;
+        if(!root->child[0] && !root->child[1]) return -1;
+        for(int i = 31; i >= 0; i--){
+            int lb = ((val >> i) & 1)?0:1;
+            if(!curr->child[lb]){
+                curr = curr->child[1-lb];
+            }
+            else{
+                res |= (1 << i);
+                curr = curr->child[lb];
+            }
+        }
+        if(curr->end) return res;
+        else return 0;
+    }
+    vector<int> maximizeXor(vector<int>& nums, vector<vector<int>>& queries) {
+        int cnt = 0, n = queries.size(), j =0, len = nums.size();
+        
+        sort(nums.begin(), nums.end());
+        vector<int> ans(n,-1);
+        vector<vector<int>> q;
+
+        root = new TrieNode();
+        
+        for(auto &x: queries){
+            q.push_back({x[1], x[0], cnt++});   // This part is best
+        }
+        sort(q.begin(), q.end());
+        
+        
+        for(auto &x: q){
+            while(j < len && nums[j] <= x[0]){   // And this implementation is lit
+                
+                build(nums[j], root);
+                j++;
+            }
+            ans[x[2]] = helper(x[1], root);
+        }
+        return ans;
+        
+    }
+};
