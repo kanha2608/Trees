@@ -1,0 +1,55 @@
+Here, two values are misplaced. 
+So, hint is that we know inorder is in sorted order. 
+so if we have 
+inorder as that
+1 9 4 5 3 10 so we know that if we exchange 9 and 3 our tree will be restored. 
+So, idea is to do inorder but how? 
+So, basically inorder we do using morris / bst iterator (only if space is O(h)) .
+
+Morris :-
+Here, we know if A has left then we have to set its predecessor->right to curr. 
+if that is already set means its time to explore this and move right 
+and make and move left.
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+vector<int> Solution::recoverTree(TreeNode* A) {
+    int maxVal = -1e9;
+    vector<int> ans;
+    while(A){
+        if(A->left){
+            TreeNode* curr = A->left;
+            while(curr->right && curr->right != A){
+                curr = curr->right;
+            }
+            if(curr->right == A){
+                if(maxVal > A->val){
+                    ans = {A->val, maxVal};
+                }
+                maxVal = max(maxVal, A->val);
+                curr->right = NULL;
+                A = A->right;
+            }
+            else{
+                curr->right = A;
+                A = A->left;
+            }
+        }
+        else{
+            if(maxVal > A->val){
+                ans = {A->val, maxVal};
+            }
+            maxVal = max(maxVal, A->val);
+            A = A->right;
+        }
+    }
+    return ans;
+    
+}
