@@ -1,0 +1,43 @@
+1. Use of queue -> traverse and maintain a prev node then while traversing if prev exist then mark its next to curr. And go on.
+
+
+2. Const space.
+-> Use of next pointer to traverse right side. (level order).
+-> need of nextLevel pointer that will mark the nextLevel first node.
+-> prev node that will be prev node that need to get its next in next level. 
+-> once set then feel free to move using next.
+
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+void Solution::connect(TreeLinkNode* A) {
+    if(!A) return ;
+    A->next = NULL;
+    TreeLinkNode* curr = A, *nextLevel = NULL, *prev = NULL;
+    while(curr){
+        if(curr->left){
+            if(!nextLevel)  nextLevel = curr->left;
+            if(prev)   prev->next = curr->left;
+            prev = curr->left;
+        }
+        if(curr->right){
+            if(!nextLevel)  nextLevel = curr->right;
+            if(prev) prev->next = curr->right;
+            prev = curr->right;
+        }
+        
+        if(!curr->next){
+            curr = nextLevel;
+            nextLevel = prev = NULL;
+        }
+        else{
+            curr = curr->next;
+        }
+    }
+
+}
