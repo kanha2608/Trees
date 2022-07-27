@@ -1,0 +1,25 @@
+Here, thought process for current root. if its child has even size then pull that off and increase global answer by 1. and if odd then add this to current root.
+
+int Solution::solve(int A, vector<vector<int> > &B) {
+    vector<int> dp(A + 1), adj[A+1];
+    for(auto &x: B){
+        adj[x[0]].push_back(x[1]);
+        adj[x[1]].push_back(x[0]);
+    }
+    
+    int ans = 0;
+    function<void(int,int)> util = [&](int i, int par){
+        dp[i] = 1;
+        for(auto &x: adj[i]){
+            if(x == par)    continue;
+            util(x, i);
+            
+            if(dp[x]%2 == 0)    ans++;
+            else
+                dp[i] += dp[x];
+        }
+    };
+    
+    util(1, -1);
+    return ans;
+}
